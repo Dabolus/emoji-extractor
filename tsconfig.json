@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "strict": true,
+    "target": "es2022",
+    "module": "es2022",
+    "moduleResolution": "node",
+    "lib": ["es2022"],
+    "rootDir": "src",
+    "outDir": "lib"
+  },
+  "include": ["src"],
+  "exclude": ["node_modules"]
+}
