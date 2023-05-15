@@ -1,16 +1,6 @@
 import { promises as fs } from 'node:fs';
-import type { Font, Glyph } from 'fontkit';
-
-export interface GlyphImage {
-  originX: number;
-  originy: number;
-  type: string;
-  data: Uint8Array;
-}
-
-interface GlyphWithImage extends Glyph {
-  getImageForSize(size: number): GlyphImage | null;
-}
+import type { Font } from 'fontkit';
+import type { SBIXGlyph } from './model';
 
 export const extractCodePointsImagesFromFont = async (
   font: Font,
@@ -22,7 +12,7 @@ export const extractCodePointsImagesFromFont = async (
 
   for (let i = 0; i < font.numGlyphs; i++) {
     // TODO: fix typings upstream
-    const glyph = font.getGlyph(i) as GlyphWithImage;
+    const glyph = font.getGlyph(i) as SBIXGlyph;
     const glyphImage = glyph.getImageForSize(160);
 
     if (glyphImage?.data) {
