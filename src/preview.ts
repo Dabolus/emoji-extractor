@@ -1,6 +1,6 @@
 import { promises as fs } from 'node:fs';
 import url from 'node:url';
-import { createCanvas, loadImage } from 'canvas';
+import { createCanvas, loadImage, registerFont } from 'canvas';
 
 // Constants
 const imageWidth = 2180;
@@ -17,8 +17,13 @@ export interface GeneratePreviewOptions {
   outputFile: string | URL;
 }
 
-const headerPromise = loadImage(
-  url.fileURLToPath(new URL('../assets/header.png', import.meta.url)),
+registerFont(
+  url.fileURLToPath(new URL('../assets/Adventure.otf', import.meta.url)),
+  { family: 'Adventure' },
+);
+registerFont(
+  url.fileURLToPath(new URL('../assets/Chinyen.otf', import.meta.url)),
+  { family: 'Chinyen' },
 );
 
 export const generatePreview = async ({
@@ -27,10 +32,7 @@ export const generatePreview = async ({
 }: GeneratePreviewOptions) => {
   process.stdout.write('Parsing emojis from the folder...\n');
 
-  const [emojis, header] = await Promise.all([
-    fs.readdir(emojisDirectory),
-    headerPromise,
-  ]);
+  const emojis = await fs.readdir(emojisDirectory);
 
   const rows = Math.ceil(emojis.length / emojisPerRow);
 
@@ -52,7 +54,21 @@ export const generatePreview = async ({
 
   process.stdout.write('Drawing the header...\n');
 
-  ctx.drawImage(header, 0, 0, imageWidth, headerHeight);
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.lineWidth = 4;
+
+  ctx.font = '150px Adventure';
+  ctx.fillStyle = '#f0f0f0';
+  ctx.strokeStyle = '#000';
+  ctx.fillText('Complete Emoji Collection', imageWidth / 2, headerHeight / 3);
+  ctx.strokeText('Complete Emoji Collection', imageWidth / 2, headerHeight / 3);
+
+  ctx.font = '100px Chinyen';
+  ctx.fillStyle = '#f6ba30';
+  ctx.strokeStyle = '#4f3d08';
+  ctx.fillText('by Dabolus', imageWidth / 2, (headerHeight / 3) * 2);
+  ctx.strokeText('by Dabolus', imageWidth / 2, (headerHeight / 3) * 2);
 
   process.stdout.write('Drawing the separator...\n');
 
