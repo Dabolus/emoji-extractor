@@ -3,14 +3,14 @@ import url from 'node:url';
 import { createCanvas, loadImage, registerFont } from 'canvas';
 
 // Constants
-const imageWidth = 2180;
+const emojisPerRow = 54;
 const emojiSize = 40;
 const padding = 10;
 const headerSpacing = 2;
 const separatorHeight = 4;
 
+const imageWidth = emojiSize * emojisPerRow + padding * 2;
 const headerHeight = Math.round((imageWidth / 6000) * 775);
-const emojisPerRow = (imageWidth - padding * 2) / emojiSize;
 
 export interface GeneratePreviewOptions {
   emojisDirectory: string | URL;
